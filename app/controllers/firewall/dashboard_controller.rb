@@ -6,6 +6,9 @@ module Firewall
     def index
     end
 
+    def help
+    end
+
     def activate_blacklisting
       @message = "Blacklisting is already enabled!"
       if(!DashboardHelper.blacklisting_active?)
@@ -20,6 +23,12 @@ module Firewall
       end
 
       render 'firewall/dashboard/index'
+    end
+
+    def dump_rules
+      date = Time.now.to_formatted_s(:number)
+      headers['Content-Disposition'] = "attachment; filename=firewall_config_#{date}"
+      render :text => IptablesHelper.get_rules(), :content_type => Mime::TEXT
     end
 
   end

@@ -51,9 +51,8 @@ module Firewall
 
       def show_rules
         gain_sudo()
-        f = IO.popen(['sudo', '-n', 'iptables', '-L', '--line-numbers'], :err=>[:child, :out])
+        f = IO.popen(['sudo', '-n', 'iptables', '-n', '-L', '--line-numbers'], :err=>[:child, :out])
         result = f.readlines.join
-        p result  
         return result
       end
 
