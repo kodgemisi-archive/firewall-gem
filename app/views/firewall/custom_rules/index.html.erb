@@ -1,0 +1,36 @@
+<div id="main" class="row">
+  <div class="col-lg-10 col-lg-offset-1">
+
+    <% if !@message.nil? %>
+    <div class="alert fade in">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Message: </strong><%= @message.html_safe %>
+    </div>
+    <% end %>
+
+    <!-- All Rules -->
+    <legend>All Rules <span class="toggle-button" data-toggle="collapse" data-target="#rules"></span></legend>
+    <div id="rules" class="collapse">
+      <pre><%= Firewall::IptablesHelper.show_rules() %></pre>      
+    </div>
+
+    <!-- Add Custom Rule -->
+    <form action="<%= url_for :controller => 'rules', :action => 'create' %>" method="post">
+      <fieldset>
+        <legend>Add Custom rule</legend>
+        <div class="well">
+          <div class="form-group">
+            <label for="newRule">New rule</label>
+            <input type="text" name="rule" class="form-control" id="newRule" required placeholder="New iptables rule without iptables command">
+          </div>
+          <button type="submit" class="btn btn-success">Add rule</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <br>
+
+    <%= render "firewall/partials/remove_rule" %>
+
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<div id="main" class="row">
+  <div class="col-lg-10 col-lg-offset-1">
+
+    <% if !@message.nil? %>
+    <div class="alert fade in">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Message: </strong><%= @message.html_safe %>
+    </div>
+    <% end %>
+
+    <!-- All Rules -->
+    <legend>All Rules <span class="toggle-button" data-toggle="collapse" data-target="#rules"></span></legend>
+    <div id="rules" class="collapse">
+      <pre><%= Firewall::IptablesHelper.show_rules() %></pre>      
+    </div>
+
+    <%= render "firewall/partials/protected_urls" %>
+
+    <br>
+
+    <!-- Protect a URL -->
+    <form class="form-inline" action="<%= url_for :controller => 'rules', :action => 'protect_url' %>" method="post">
+      <fieldset>
+        <legend>Protect a URL</legend>
+        <div class="well">
+          <div class="form-group">
+            <label for="newRule">URL pattern</label>
+            <input type="text" name="url" class="form-control" id="newRule" required placeholder="URL to be protected">
+            <p class="help-block">Not regex, simple sub-string matching with Case Sensitivity. <strong>Don't use white characters (eg. space) otherwise things will broke!</strong></p>
+          </div>
+
+          <div class="form-group">
+            If somebody makes
+            <input type="number" name="hitcount" class="form-control inline-input" min="1" max="20">
+            requests in
+            <input type="number" name="interval" class="form-control inline-input" min="1">
+            seconds, block his/her IP for
+            <input type="number" class="form-control inline-input" min="1" readonly value="120">
+            seconds. 
+          </div>
+
+          <button type="submit" class="btn btn-success">Protect URL</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <br>
+
+    <%= render "firewall/partials/remove_rule" %>
+
+  </div>
+</div>

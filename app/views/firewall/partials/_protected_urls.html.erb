@@ -1,0 +1,7 @@
+<!-- Already Protected URLs -->
+<legend>Already Protected URLs <span class="toggle-button" data-toggle="collapse" data-target="#urls"></span></legend>
+<div id="urls" class="collapse in">
+  <% Firewall::UrlProtectionsHelper.protected_urls.each do |url| %>
+  <span class="label label-success"><%= url %></span>
+  <% end %>
+</div>

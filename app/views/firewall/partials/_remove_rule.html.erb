@@ -1,0 +1,18 @@
+<!-- Remove Rule -->
+<form action="<%= url_for :controller => 'rules', :action => 'remove' %>" method="post">
+  <fieldset>
+    <legend>Remove a rule</legend>
+    <div class="well">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <label for="ruleNumber">Rule index number</label>
+            <input type="number" min="1" name="index" class="form-control" id="ruleNumber" required placeholder="Rule index">
+            <p class="help-block">Use rule index number from above <strong>Rules</strong> table. </p>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-danger">Remove rule</button>
+    </div>
+  </fieldset>
+</form>
