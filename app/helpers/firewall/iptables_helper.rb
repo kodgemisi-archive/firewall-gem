@@ -23,14 +23,15 @@ module Firewall
 
       def add_rule(rule)
         gain_sudo()
+        puts "add_rule #{rule}"
         rule_array = rule.split(' ')
-        f = IO.popen(['sudo', '-n', 'iptables'] + rule_array)
+        f = IO.popen(['sudo', '-n', 'iptables'] + rule_array, :err=>[:child, :out])
         return f.readlines.join
       end
 
       def remove_rule(linenumber, chain="INPUT")
         gain_sudo()
-        f = IO.popen(['sudo', '-n', 'iptables', '-D', "#{chain}", "#{linenumber}"])
+        f = IO.popen(['sudo', '-n', 'iptables', '-D', "#{chain}", "#{linenumber}"], :err=>[:child, :out])
         return f.readlines.join
       end
 
@@ -50,14 +51,14 @@ module Firewall
 
       def show_rules
         gain_sudo()
-        f = IO.popen(['sudo', '-n', 'iptables', '-L', '--line-numbers'])
+        f = IO.popen(['sudo', '-n', 'iptables', '-L', '--line-numbers'], :err=>[:child, :out])
         result = f.readlines.join
         p result  
         return result
       end
 
       def blacklisted_ips(blacklist_name='blacklist')
-        f = IO.popen(['cat', "#{blacklist_name}"])
+        f = IO.popen(['cat', "#{blacklist_name}"], :err=>[:child, :out])
         return f.readlines.join
       end
 
@@ -76,7 +77,7 @@ module Firewall
       end
 
       def get_rules()
-        f = IO.popen(['sudo', 'iptables-save'])
+        f = IO.popen(['sudo', 'iptables-save'], :err=>[:child, :out])
         return f.readlines.join
       end
 
@@ -85,7 +86,7 @@ module Firewall
         reset_rules()
 
         #sudo already gained in reset
-        f = IO.popen(['sudo', 'iptables-restore'], mode="a+")
+        f = IO.popen(['sudo', 'iptables-restore'], mode="a+", :err=>[:child, :out])
         f.write(all_rules_as_string)
         f.close
       end

@@ -2,3 +2,22 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+#main{
+	margin-top: 2em;
+	width: 100%;
+}
+
+.toggle-button{
+	cursor: pointer;
+	font-size: 0.6em;
+	color: gray;
+	font-family: monospace;
+}
+
+.toggle-button:before{
+	content: "toggle"
+}
+
+.inline-input{
+	width: 100px;
+}

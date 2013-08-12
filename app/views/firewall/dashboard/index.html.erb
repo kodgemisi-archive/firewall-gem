@@ -1,27 +1,83 @@
-<% if !@message.nil? %>
-<div class="alert fade in">
-  <button type="button" class="close" data-dismiss="alert">×</button>
-  <strong>Message: </strong><%= @message %>
-</div>
-<% end %>
+<div id="main" class="row">
+  <div class="col-lg-10 col-lg-offset-1">
 
-<div class="row">
-  <div class="col-lg-10 col-lg-push-1">
+    <% if !@message.nil? %>
+    <div class="alert fade in">
+      <button type="button" class="close" data-dismiss="alert">×</button>
+      <strong>Message: </strong><%= @message.html_safe %>
+    </div>
+    <% end %>
 
-    <legend>Rules</legend>
-    <pre><%= Firewall::IptablesHelper.show_rules() %></pre>
+    <legend>Rules <span class="toggle-button" data-toggle="collapse" data-target="#rules"></span></legend>
+    <div id="rules" class="collapse in">
+      <pre><%= Firewall::IptablesHelper.show_rules() %></pre>      
+      
+      <form action="<%= url_for :controller => 'dashboard', :action => 'activate_blacklisting' %>" method="get">
+        <fieldset>
+          <button type="submit" class="btn btn-default" <%= Firewall::DashboardHelper.blacklisting_active? ? "disabled=\"disabled\"" : "" %>>Activate blacklisting</button>
+          <p class="help-block">Blacklisting is currently <%= Firewall::DashboardHelper.blacklisting_active? ? "active" : "NOT active" %></p>
+        </fieldset>
+      </form>
+    </div>
 
-    <button type="button" class="btn btn-default">Activate blacklisting</button>
-    <p class="help-block">Blacklisting is currently active</p>
+    <!-- Protect a URL -->
+    <form class="form-inline" action="<%= url_for :controller => 'rules', :action => 'protect_url' %>" method="post">
+      <fieldset>
+        <legend>Protect a URL</legend>
+        <div class="form-group">
+          <label for="newRule">URL pattern</label>
+          <input type="text" name="url" class="form-control" id="newRule" required placeholder="URL to be protected">
+          <p class="help-block">Not regex, simple sub-string matching with Case Sensitivity. <strong>Don't use white characters (eg. space) otherwise things will broke!</strong></p>
+        </div>
 
+        <div class="form-group">
+          If somebody makes
+          <input type="number" name="hitcount" class="form-control inline-input" min="1" max="20">
+          requests in
+          <input type="number" name="interval" class="form-control inline-input" min="1">
+          seconds, block his/her IP for
+          <input type="number" class="form-control inline-input" min="1" readonly value="120">
+          seconds. 
+        </div>
+
+        <button type="submit" class="btn btn-default">Protect URL</button>
+      </fieldset>
+    </form>
+
+    <br>
+
+    <!-- Add Custom Rule -->
     <form action="<%= url_for :controller => 'rules', :action => 'create' %>" method="post">
       <fieldset>
-        <legend>Add rule</legend>
-        <div class="form-group">
-          <label for="newRule">New rule</label>
-          <input type="text" name="rule" class="form-control" id="newRule" placeholder="New iptables rule without iptables command">
+        <legend>Add Custom rule <span class="toggle-button" data-toggle="collapse" data-target="#addCustomRule"></span></legend>
+        <div id="addCustomRule" class="collapse">
+          <div class="form-group">
+            <label for="newRule">New rule</label>
+            <input type="text" name="rule" class="form-control" id="newRule" required placeholder="New iptables rule without iptables command">
+          </div>
+          <button type="submit" class="btn btn-default">Add rule</button>
         </div>
-        <button type="submit" class="btn btn-default">Add rule</button>
+      </fieldset>
+    </form>
+
+    <br>
+
+    <!-- Remove Rule -->
+    <form action="<%= url_for :controller => 'rules', :action => 'remove' %>" method="post">
+      <fieldset>
+        <legend>Remove a rule <span class="toggle-button" data-toggle="collapse" data-target="#removeRule"></span></legend>
+        <div id="removeRule" class="collapse">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="ruleNumber">Rule index number</label>
+                <input type="number" min="1" name="index" class="form-control" id="ruleNumber" required placeholder="Rule index">
+                <p class="help-block">Use rule index number from above <strong>Rules</strong> table. </p>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-default">Remove rule</button>
+        </div>
       </fieldset>
     </form>
 
