@@ -31,5 +31,27 @@ module Firewall
       render :text => IptablesHelper.get_rules(), :content_type => Mime::TEXT
     end
 
+    def restore_rules
+      uploaded_file = params[:file]
+
+      if (uploaded_file.nil?)
+        @message = "No file given!"
+        render 'firewall/dashboard/index'
+        return
+      end
+
+      file_content = uploaded_file.read
+      
+      if (file_content.nil? || file_content.strip == '')
+        @message = "Empty file, no rule applied!"
+        render 'firewall/dashboard/index'
+        return
+      end
+
+      p file_content
+      @message = IptablesHelper.apply_rules(file_content)
+      render 'firewall/dashboard/index'
+    end
+
   end
 end
