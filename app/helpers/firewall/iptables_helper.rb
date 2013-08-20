@@ -7,7 +7,7 @@ module Firewall
     class << self
 
       def gain_sudo
-        @password = 'ubuntu'
+        @password = Config.sudo_password
         io = IO.popen(["sudo", "-S", 'pwd'], mode="a+")
 
         io.write("#{@password}\n")
