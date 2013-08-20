@@ -19,3 +19,5 @@ test/dummy/.sass-cache
 
 # Ignore database schema so everybody maintain own schema
 db/schema.rb
+
+firewall-*.gem
