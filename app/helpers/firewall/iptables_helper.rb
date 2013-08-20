@@ -1,3 +1,5 @@
+require 'firewall/config'
+
 module Firewall
   module IptablesHelper
 

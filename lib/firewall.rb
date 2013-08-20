@@ -1,4 +1,5 @@
 require "firewall/engine"
+require "firewall/config"
 
 module Firewall
 
