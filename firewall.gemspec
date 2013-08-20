@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Destan Sarpkaya"]
   s.email       = ["destan@kodgemisi.com"]
   s.homepage    = "http://github.com/kodgemisi/firewall-gem"
-  s.summary     = "TODO: Summary of Firewall."
-  s.description = "TODO: Description of Firewall."
+  s.summary     = "GUI for managing iptables. Also provides shorthand iptables rules to ban IPs who exceed configurable rate limits."
+  s.description = "GUI for managing iptables. Also provides shorthand iptables rules to ban IPs who exceed configurable rate limits. See and manage blocked IPs from GUI."
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
